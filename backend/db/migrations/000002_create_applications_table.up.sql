@@ -1,0 +1,25 @@
+CREATE TABLE applications (
+    id                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    company_name       VARCHAR(255) NOT NULL,
+    position_title     VARCHAR(255) NOT NULL,
+    job_description    TEXT,
+    job_posting_url    VARCHAR(1000),
+    location           VARCHAR(255),
+    work_mode          ENUM('remote','hybrid','onsite') DEFAULT NULL,
+    salary_min         INT UNSIGNED DEFAULT NULL,
+    salary_max         INT UNSIGNED DEFAULT NULL,
+    source             VARCHAR(100),
+    current_status_id  TINYINT UNSIGNED NOT NULL,
+    priority           ENUM('low','medium','high') NOT NULL DEFAULT 'medium',
+    applied_date       DATE DEFAULT NULL,
+    notes              TEXT,
+    created_at         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    archived_at        TIMESTAMP NULL DEFAULT NULL,
+    PRIMARY KEY (id),
+    KEY idx_applications_status (current_status_id),
+    KEY idx_applications_company (company_name),
+    KEY idx_applications_applied_date (applied_date),
+    CONSTRAINT fk_applications_status
+        FOREIGN KEY (current_status_id) REFERENCES application_statuses (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
